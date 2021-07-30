@@ -2,6 +2,7 @@ import './sass/main.scss';
 import './js/searchApi.js';
 import NewsApiService from './js/news-service';
 import hitsTmpl from './templates/galleryHits.hbs';
+import { onFetchError } from './js/validify';
 
 const newsApiService = new NewsApiService();
 
@@ -19,7 +20,13 @@ function onSearch(e) {
 
   clearHitsContainer();
   newsApiService.query = e.currentTarget.elements.searchQuery.value;
-  newsApiService.reserPage();
+
+  if (newsApiService.query === '') {
+    console.log(newsApiService.query);
+    return onFetchError();
+  }
+
+  newsApiService.resetPage();
   newsApiService.fetchHits().then(appendHitsMarkup);
   clearHitsContainer();
   appendHitsMarkup(hits);
