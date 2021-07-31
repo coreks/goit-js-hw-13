@@ -91,3 +91,13 @@ header {
 .info-item:not(:last-child) {
   margin: 0 5px;
 }
+
+.load-more {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.load-more.is-hidden {
+  display: none;
+}

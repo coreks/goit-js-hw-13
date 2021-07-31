@@ -1,4 +1,8 @@
 import { onFetchError } from './validify';
+import LoadMoreBtn from './loadMoreBtn';
+
+const KEY = '22675248-9d53002fe5bb858ba3591edf9';
+const BASE_URL = 'https://pixabay.com/api';
 
 export default class NewsApiService {
   constructor() {
@@ -9,20 +13,20 @@ export default class NewsApiService {
 
   fetchHits() {
     console.log(this);
-    const options = {
-      key: '22675248-9d53002fe5bb858ba3591edf9',
-    };
 
-    const url = `https://pixabay.com/api/?key=${options.key}&q=${this.searchQuery}&image_type=photo&orientation=horisontal&safesearch=true&page=${this.page}&per_page=${this.per_page}`;
+    const url = `${BASE_URL}/?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horisontal&safesearch=true&page=${this.page}&per_page=${this.per_page}?fields=webformatURL;largeImageURL;tags;likes;views;comments;downloads`;
 
     return fetch(url)
-      .then(r => r.json())
-      .then(data => {
-        if (data.hits.length === 0) {
-          return onFetchError();
+      .then(response => response.json())
+      .then(({ hits }) => {
+        if (hits.length === 0) {
+          onFetchError();
+          LoadMoreBtn.disable();
+          return;
         }
         this.incrementPage();
-        return data.hits;
+        console.log(hits);
+        return hits;
       });
   }
 
