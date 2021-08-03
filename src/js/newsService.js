@@ -18,8 +18,6 @@ export default class NewsApiService {
   }
 
   async fetchHits() {
-    console.log(this);
-
     const url = `${BASE_URL}/?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horisontal&safesearch=true&page=${this.page}&per_page=${this.per_page}`;
 
     try {
@@ -34,7 +32,7 @@ export default class NewsApiService {
         return onFetchError();
       }
 
-      if (newHits.length < 40) {
+      if (newHits.length < this.per_page) {
         loadMoreBtn.disable();
         loadMoreBtn.hide();
         onFechEnd();
